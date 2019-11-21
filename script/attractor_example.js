@@ -11,8 +11,8 @@ const _fps = 60;
 const _anim = 1000 / _fps;
 
 let anchor = new Vector(0, 0);
-let system_a = new ParticleSystem(anchor);
-let system_b = new ParticleSystem(anchor);
+let system_a = new World(anchor);
+let system_b = new World(anchor);
 
 // init
 let dim = 10;

@@ -17,7 +17,7 @@ let sun = new GravitySource(canvas.width/2, canvas.height/2);
 sun.setMass(2);
 
 let anchor = new Vector(0, 0);
-let system = new ParticleSystem(anchor);
+let system = new World(anchor);
 let planet = new Particle(200, canvas.height/2 - 200);
 planet.setMass(10);
 

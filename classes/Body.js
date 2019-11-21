@@ -12,6 +12,8 @@ class Body {
 		this.setMass(1); // default mass
 		this.setData({});
 		this.static = false;
+		this.shape = Shape.Circle(1);
+		this.is_colliding = false;
 	}
 
 	setStatic(_static) {
@@ -63,6 +65,15 @@ class Body {
 	setData(data_obj) {
 		this.data = data_obj;
 	}
+	setShape(shape) {
+		this.shape = shape;
+	}
+	collides(bool) {
+		if(bool == undefined) {
+			return this.is_colliding;
+		}
+		this.is_colliding = bool;
+	}
 
 	getX() {
 		return this.getLocation().x;
@@ -84,5 +95,8 @@ class Body {
 	}
 	getData() {
 		return this.data;
+	}
+	getShape() {
+		return this.shape;
 	}
 }

@@ -12,9 +12,8 @@ const _anim = 1000 / _fps;
 
 
 
-// ATTRACTOR
 let anchor = new Vector(5, 5);
-let system = new ParticleSystem(anchor);
+let system = new World(anchor);
 // init
 let dim = 45;
 let vec_length = 20;

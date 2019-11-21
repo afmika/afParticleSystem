@@ -4,12 +4,17 @@
  * github.com/afmika
  */
  
-class ParticleSystem {
+class World {
 	constructor(anchor) {
 		this.setAnchor(anchor);
 		this.particles = [];
+		this.collision = true;
 	}
 	
+	setCollision(bool) {
+		this.collision = bool;
+	}
+
 	setAnchor(anchor) {
 		this.anchor = anchor || new Vector(0, 0);
 		console.log("* ANCHOR = ", this.anchor.getStatus(3));
@@ -20,6 +25,9 @@ class ParticleSystem {
 	}
 	getAnchor() {
 		return this.anchor;
+	}
+	getCollision() {
+		return this.collision;
 	}
 
 	add(particle) {
@@ -66,9 +74,45 @@ class ParticleSystem {
 		this.particles = tab;
 	}
 	
-	update() {
+	update(bool) {
 		this.each(p => {
+			if( this.collision ) { 
+				if( bool || bool == undefined ) {// first priority
+					if( this.solveCollision(p) ) {
+						p.collides(true);
+					} else {
+						p.collides(false);
+					}
+				}
+			}
 			p.update();
 		});
+	}
+
+	solveCollision(body) {
+		let is_colliding = false;
+		this.each(p => {
+			if(p != body) {
+				let _a = {
+					pos : body.getLocation(),
+					shape: body.getShape()
+				};
+				let _b = {
+					pos : p.getLocation(),
+					shape: body.getShape()
+				};
+				// x,y is always defined as the center of gravity
+				if(_a.shape.type == _b.shape.type) {
+					if(_a.shape.type == 'CIRCLE') {
+						let dist = Vector.sub(_b.pos, _a.pos).getLength();
+						if(dist <= _a.shape.radius + _b.shape.radius) {
+							is_colliding = true;
+							return;
+						}
+					}
+				} 
+			}
+		});
+		return is_colliding;
 	}
 }
