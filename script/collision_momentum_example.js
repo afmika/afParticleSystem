@@ -13,28 +13,24 @@ const _anim = 1000 / _fps;
 
 let anchor = new Vector(0, 0);
 let system = new World(anchor);
+// ENABLE MOMENTUM
+system.setMomentum(true);
+
 let dim = 10;
 let n = 10;
-for(let i = 0; i < n; i++) {
-	let rx = 5 + Math.random() * canvas.width;
-	let ry = 5 + Math.random() * canvas.height;
-	let invalid = rx + dim >= canvas.width || ry + dim >= canvas.height;
-	if(invalid) {
-		i--;
-	} else {
-		system.add(new Ball( rx , ry, dim));
-	}
-}
 
-system.eachIndex((i, p) => {
-	let smth = i + 1;
-	p.setVelocity(new Vector(Math.random(), Math.random()));
-	// p.setAcceleration(new Vector(0, 0.05 * smth));
-	p.setMass(1000);
-	//p.applyForce(new Vector(0, -9.81 / 100));
-});
-system.applyForce(new Vector(0, -9.81));
-// system.setMomentum(true);
+
+let ball_a = new Ball(20 , canvas.height/2, 10);
+ball_a.setVelocity(new Vector(1, 0));
+ball_a.setMass(1);
+
+let ball_b = new Ball(canvas.width/2 + 100, canvas.height/2 -100, 25);
+ball_b.setVelocity(new Vector(-1.5, 0.5));
+ball_b.setMass(2);
+
+system.add(ball_a);
+system.add(ball_b);
+
 
 
 function update() {
@@ -50,12 +46,12 @@ function update() {
 		if(x <= 0 || x+dim >= canvas.width) {
 			body.setVelocity( v.times(-1, 1) );
 		}
-		if(/*y <= 0 ||*/ y+dim >= canvas.height) {
+		if(y <= 0 || y+dim >= canvas.height) {
 			body.setVelocity( v.times(1, -1) );
 		}
 	});
 
-	system.update();
+	system.update(true);
 }
 
 
