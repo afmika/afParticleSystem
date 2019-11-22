@@ -43,10 +43,10 @@ function update() {
 		ctx.arc(x, y, body.getShape().radius, 0, 2 * Math.PI, false);
 		ctx.fill();
 		ctx.closePath();
-		if(x <= 0 || x+dim >= canvas.width) {
+		if(x-body.getShape().radius <= 0 || x+body.getShape().radius >= canvas.width) {
 			body.setVelocity( v.times(-1, 1) );
 		}
-		if(y <= 0 || y+dim >= canvas.height) {
+		if(y-body.getShape().radius <= 0 || y+body.getShape().radius >= canvas.height) {
 			body.setVelocity( v.times(1, -1) );
 		}
 	});

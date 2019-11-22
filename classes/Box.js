@@ -7,6 +7,6 @@
 class Box extends Body {
 	constructor(x, y, width, height) {
 		super(new Vector(x, y));
-		this.setShape(Shape.Square(new Vector(width, height)));
+		this.setShape( Shape.Square(width, height) );
 	}
 }

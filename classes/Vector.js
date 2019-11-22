@@ -53,8 +53,11 @@ class Vector {
 		return this.y;
 	}
 	getLength() {
+		return Math.sqrt( this.getSqrLength() );
+	}
+	getSqrLength() {
 		let x = this.getX(), y = this.getY();
-		return Math.sqrt( x*x + y*y );
+		return x*x + y*y;
 	}
 
 	getStatus(precision) {

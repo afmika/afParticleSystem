@@ -30,13 +30,13 @@ class Body {
 		this.setAcceleration(Vector.add(this.getAcceleration(), tmp ));
 	}
 	update() {
-			let vel = this.getVelocity();
-			
-			// dx <- dx + d^2 x
-			let acc = this.getAcceleration();
-			this.setVelocity( Vector.add(vel, acc) );
+		let vel = this.getVelocity();
+		
+		// dx <- dx + d^2 x
+		let acc = this.getAcceleration();
+		this.setVelocity( Vector.add(vel, acc) );
 
-			// x <- x + dx
+		// x <- x + dx
 		if( ! this.isStatic() ) {
 			let loc = this.getLocation();
 			this.setLocation( Vector.add(loc, vel) );

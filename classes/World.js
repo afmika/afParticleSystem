@@ -87,11 +87,9 @@ class World {
 			if( that.collision ) { 
 				let other = that.solveCollision(p)
 				if( other != null ) {
-					
-					if(this.getMomentum()) {
+					let compute_momentum = this.getMomentum();
+					if( compute_momentum ) {
 						// F = dp / dt = m (dv / dt) = m a
-						/*
-						// ONE DIMENSIONAL MODEL (vfinal // vinitial => no change of direction)
 						let m1 = p.getMass(),
 							m2 = other.getMass();
 						// before collision
@@ -106,29 +104,14 @@ class World {
 							_B = v1.times( (2 * m1) / (m1 + m2) );
 						let v2_f = Vector.add(_A, _B);
 
-						p.setVelocity(v1_f);
-						other.setVelocity(v2_f);
-						*/
+						if( ! other.isStatic() ) {	
 
-						/*
-						2Dimensionnal modal
-						*/
-						let m1 = p.getMass(),
-							m2 = other.getMass();
-						// before collision
-						let v1 = p.getVelocity(),
-							v2 = other.getVelocity();
-						// after collision
-						let A = v1.times( (m1 - m2) / (m1 + m2) ),
-							B = v2.times( (2 * m2) / (m1 + m2) );
-						let v1_f = Vector.add(A, B);
-
-						let _A = v2.times( (m2 - m1) / (m1 + m2) ),
-							_B = v1.times( (2 * m1) / (m1 + m2) );
-						let v2_f = Vector.add(_A, _B);
-
-						p.setVelocity(v1_f);
-						other.setVelocity(v2_f);
+							p.setVelocity(v1_f);
+							other.setVelocity(v2_f);
+						} else {							
+							debugger
+							p.setVelocity(v1.times(-1));
+						}
 					}
 
 					p.collides(true);
@@ -138,6 +121,11 @@ class World {
 			}
 			p.update();
 		});
+	}
+
+	AABB(box1, box2){
+	    var bool = ( (box2.x >= box1.x+box1.width) || (box2.x+box2.width<= box1.x) || (box2.y >= box1.y + box1.height)|| (box2.y + box2.height <= box1.y));
+	 	 return !bool;
 	}
 
 	solveCollision(body) {
@@ -163,6 +151,31 @@ class World {
 						}
 					}
 				} 
+
+
+				// CIRCLE VS BOX
+				if(_a.shape.type == 'SQUARE' && _b.shape.type == 'CIRCLE') {
+					let aa = {
+						x: _a.pos.x, 
+						y: _a.pos.y,
+						width: _a.shape.dim.x,
+						height: _a.shape.dim.y
+					};
+					let bb = {
+						x: _b.pos.x - _b.shape.radius,
+						y: _b.pos.y - _b.shape.radius,
+						width : _b.shape.radius * 2,
+						height : _b.shape.radius * 2
+					};
+					
+					if( this.AABB(aa, bb) ) {
+						collides_with = p;
+						// debugger
+						return;
+					}
+				} 
+				// BOX VS BOX
+
 			}
 		});
 

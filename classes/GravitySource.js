@@ -8,6 +8,7 @@ class GravitySource extends Body {
 	constructor(x, y) {
 		super(new Vector(x, y));
 		this.GRAVITY_CONSTANT = 0.4;
+		this.setShape(Shape.Circle(1));
 		// this.setStatic(true);
 	}
 

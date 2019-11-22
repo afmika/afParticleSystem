@@ -24,8 +24,8 @@ for(let i = 0; i < n; i++) {
 	if(invalid) {
 		i--;
 	} else {
-		system_a.add(new Particle( rx , ry ));
-		system_b.add(new Particle( rx , ry ));
+		system_a.add(new Ball( rx , ry , dim));
+		system_b.add(new Ball( rx , ry , dim));
 	}
 }
 
@@ -41,6 +41,7 @@ system_b.eachIndex((i, p) => {
 
 // ATTRACTOR
 let attractor = new GravitySource(canvas.width/2, canvas.height/2); 
+attractor.setShape(Shape.Circle(dim * 2));
 attractor.setMass(3);
 
 function update() {
@@ -48,44 +49,50 @@ function update() {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// attracted
-	system_a.each(particle => {
-		let [x, y, v, a] = [particle.getX(), particle.getY(), particle.getVelocity(), particle.getAcceleration()];
+	system_a.each(body => {
+		let [x, y, v, a] = [body.getX(), body.getY(), body.getVelocity(), body.getAcceleration()];
 
 		ctx.beginPath();
 		ctx.fillStyle = "blue";
-		ctx.fillRect(x, y, dim, dim);
+		ctx.arc(x, y, body.getShape().radius, 0, 2 * Math.PI, false);
+		ctx.fill();
 		ctx.closePath();
 
-		if(x <= 0 || x+dim >= canvas.width) {
-			particle.setVelocity( v.times(-1, 1) );
+		if(x - body.getShape().radius <= 0 || x+ body.getShape().radius >= canvas.width) {
+			body.setVelocity( v.times(-1, 1) );
 		}
-		if(y <= 0 || y+dim >= canvas.height) {
-			particle.setVelocity( v.times(1, -1) );
+		if(y - body.getShape().radius <= 0 || y+ body.getShape().radius >= canvas.height) {
+			body.setVelocity( v.times(1, -1) );
 		}
 
-		attractor.attract(particle);
+		attractor.attract(body);
 	});
 
 	// repulsed
-	system_b.each(particle => {
-		let [x, y, v, a] = [particle.getX(), particle.getY(), particle.getVelocity(), particle.getAcceleration()];
+	system_b.each(body => {
+		let [x, y, v, a] = [body.getX(), body.getY(), body.getVelocity(), body.getAcceleration()];
 
 		ctx.beginPath();
 		ctx.fillStyle = "red";
-		ctx.fillRect(x, y, dim, dim);
+		ctx.arc(x, y, body.getShape().radius, 0, 2 * Math.PI, false);
+		ctx.fill();
 		ctx.closePath();
 
-		if(x <= 0 || x+dim >= canvas.width) {
-			particle.setVelocity( v.times(-1, 1) );
+		if(x - body.getShape().radius <= 0 || x+ body.getShape().radius >= canvas.width) {
+			body.setVelocity( v.times(-1, 1) );
 		}
-		if(y <= 0 || y+dim >= canvas.height) {
-			particle.setVelocity( v.times(1, -1) );
+		if(y - body.getShape().radius <= 0 || y+ body.getShape().radius >= canvas.height) {
+			body.setVelocity( v.times(1, -1) );
 		}
 
-		attractor.repulse(particle);
+		attractor.repulse(body);
 	});
+	
+	ctx.beginPath();
 	ctx.fillStyle = "green";
-	ctx.fillRect(attractor.getX(), attractor.getY(), 20, 20);
+	ctx.arc(attractor.getLocation().getX(), attractor.getLocation().getY(), attractor.getShape().radius, 0, 2 * Math.PI, false);
+	ctx.fill();
+	ctx.closePath();
 
 	system_a.update();
 	system_b.update();
