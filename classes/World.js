@@ -105,11 +105,9 @@ class World {
 						let v2_f = Vector.add(_A, _B);
 
 						if( ! other.isStatic() ) {	
-
 							p.setVelocity(v1_f);
 							other.setVelocity(v2_f);
 						} else {							
-							debugger
 							p.setVelocity(v1.times(-1));
 						}
 					}
