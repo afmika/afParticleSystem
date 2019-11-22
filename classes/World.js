@@ -140,6 +140,7 @@ class World {
 				};
 				// x,y is always defined as the center of gravity
 				if(_a.shape.type == _b.shape.type) {
+					// CIRCLE VS CIRCLE
 					if(_a.shape.type == 'CIRCLE') {
 						let dist = Vector.sub(_b.pos, _a.pos).getLength();
 						if(Math.round(dist) <= (_a.shape.radius + _b.shape.radius)) {
@@ -148,10 +149,32 @@ class World {
 							return;
 						}
 					}
+					
+					// BOX VS BOX
+					if(_a.shape.type == 'SQUARE') {
+						let aa = {
+							x: _a.pos.x, 
+							y: _a.pos.y,
+							width: _a.shape.dim.x,
+							height: _a.shape.dim.y
+						};
+						let bb = {
+							x: _b.pos.x, 
+							y: _b.pos.y,
+							width: _b.shape.dim.x,
+							height: _b.shape.dim.y
+						};
+						
+						if( this.AABB(aa, bb) ) {
+							collides_with = p;
+							// debugger
+							return;
+						}
+					}					
 				} 
 
 
-				// CIRCLE VS BOX
+				// BOX VS CIRCLE
 				if(_a.shape.type == 'SQUARE' && _b.shape.type == 'CIRCLE') {
 					let aa = {
 						x: _a.pos.x, 
@@ -172,7 +195,7 @@ class World {
 						return;
 					}
 				} 
-				// BOX VS BOX
+
 
 			}
 		});
