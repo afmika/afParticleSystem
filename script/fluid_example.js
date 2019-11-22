@@ -14,7 +14,7 @@ const _anim = 1000 / _fps;
 let anchor = new Vector(0, 0);
 let system = new World(anchor);
 system.setMomentum(true);
-// liquid
+// air
 let air = new Friction(0.0001);
 
 let dim = 10;
@@ -60,7 +60,7 @@ function update() {
 			if(y-body.getShape().radius <= 0 || y+body.getShape().radius >= canvas.height) {
 				body.setVelocity( v.times(1, -1) );
 			}			
-		air.applyForce(body);
+			air.applyForce(body);
 
 		} else {
 			ctx.beginPath();
