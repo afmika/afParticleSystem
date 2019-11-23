@@ -104,11 +104,14 @@ class World {
 							_B = v1.times( (2 * m1) / (m1 + m2) );
 						let v2_f = Vector.add(_A, _B);
 
-						if( ! other.isStatic() ) {	
+						if( ! other.isStatic() ) {
 							p.setVelocity(v1_f);
 							other.setVelocity(v2_f);
+							
+							//this.repulseBody(p, other);
 						} else {							
 							p.setVelocity(v1.times(-1));
+							//this.repulseBody(other, p);
 						}
 					}
 
@@ -119,6 +122,16 @@ class World {
 			}
 			p.update();
 		});
+	}
+
+	repulseBody(a, b) {
+		// if a is inside b
+		// should be called only when 
+		// collision == true && momentum == true
+		let v = b.getVelocity().normalize();
+		let dl = v.times(-0.1);
+		let new_loc = Vector.add(b.getLocation(), dl);
+		b.setLocation(new_loc);
 	}
 
 	AABB(box1, box2){

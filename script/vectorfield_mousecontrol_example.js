@@ -15,7 +15,7 @@ const _anim = 1000 / _fps;
 let anchor = new Vector(5, 5);
 let system = new World(anchor);
 // init
-let dim = 45;
+let dim = 42;
 let vec_length = 20;
 
 for(let y = 0; y < canvas.height / dim; y++) {
@@ -34,6 +34,16 @@ let attractor = new GravitySource(canvas.width/2, canvas.height/2);
 attractor.setMass(1000);
 let m = {x: 0, y: 0};
 let do_gravity = false;
+let attract = true;
+
+function switch_mode() {
+	attract = !attract;
+	if(attract) {
+		document.getElementById("btn").innerHTML = "MODE : ATTRACT";
+	} else {
+		document.getElementById("btn").innerHTML = "MODE : REPULSE";
+	}
+}
 
 function mouseCoord(e) {
     var canvasLocation = [0,0];
@@ -79,7 +89,14 @@ function update() {
 
 		if(do_gravity) {
 			attractor.setLocation(new Vector(m.x, m.y));
-			attractor.repulse(particle);
+			if(attract) {
+				attractor.attract(particle);
+			} else {
+				attractor.repulse(particle);
+			}
+			// a little trick
+			particle.setVelocity(particle.getVelocity().normalize());
+			particle.setAcceleration(particle.getAcceleration().normalize());
 		}
 	});
 	

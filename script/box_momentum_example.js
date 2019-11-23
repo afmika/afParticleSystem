@@ -44,6 +44,7 @@ function update() {
 		if(y <= 0 || y+body.getShape().dim.y >= canvas.height) {
 			body.setVelocity( v.times(1, -1) );
 		}
+
 	});
 
 	system.update(true);

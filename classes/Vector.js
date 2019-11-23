@@ -16,9 +16,16 @@ class Vector {
 	static sub(u, v) {
 		return Vector.add(u, v.times(-1));
 	}
+	static randDir() {
+		let x = Math.random() * 2,
+			y = Math.random() * 2;
+		let v = new Vector(x, y);
+		return v.normalize();
+	}
 	
 	normalize() {
-		return this.times(1 / this.getLength());
+		let lg = this.getLength(); 
+		return lg == 0 ? new Vector(0, 0) : this.times(1 / lg);
 	}
 
 	times(a, b) {
