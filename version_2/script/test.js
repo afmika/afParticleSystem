@@ -11,7 +11,7 @@ let ctx = canvas.getContext("2d");
 let Draw = new DrawingTools( ctx );
 let Gui = new ControlsGUI( controlContainer );
 
-const _fps = 60;
+const _fps = 120;
 const _anim = 1000 / _fps;
 let t1 = Date.now(),
 	t2 = t1;
