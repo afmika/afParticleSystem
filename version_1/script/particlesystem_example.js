@@ -31,9 +31,8 @@ system.eachIndex((i, p) => {
 	p.setVelocity(new Vector(Math.random(), Math.random()));
 	// p.setAcceleration(new Vector(0, 0.05 * smth));
 	p.setMass(100);
-	//p.applyForce(new Vector(0, -9.81 / 100));
 });
-system.applyForce(new Vector(0, -9.81));
+system.applyForce(new Vector(0, 9.81));
 
 
 function update() {

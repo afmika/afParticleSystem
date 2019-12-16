@@ -26,7 +26,7 @@ class Body {
 	applyForce(force) {
 		// f = m a
 		// => a = (1/m) f
-		let tmp = force.times(-1 / this.mass);
+		let tmp = force.times(1 / this.mass);
 		this.setAcceleration(Vector.add(this.getAcceleration(), tmp ));
 	}
 	update() {

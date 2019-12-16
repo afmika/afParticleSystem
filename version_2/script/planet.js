@@ -13,13 +13,14 @@ let Draw = new DrawingTools( ctx );
 let Gui = new ControlsGUI( controlContainer );
 let TimerGui = new ControlsGUI( timerContainer );
 
-const _fps = 120;
+const _fps = 60;
 const _anim = 1000 / _fps;
 let t1 = Date.now(),
 	t2 = t1;
 let nframes = 0;
 let timeSec = 0;
-let scale = 0.0001;
+let scale = 0.001;
+let applied = false;
 
 
 let anchor = new Vector(0, 0);
@@ -27,33 +28,19 @@ let system = new World(anchor);
 // ENABLE MOMENTUM
 system.setMomentum(true);
 
-for (var i = 0; i < 30; i++) {
-	let x = Math.random() * canvas.width;
-	let y = Math.random() * canvas.height;
-	let w = Math.random() * 100 + 10; 
-	let h = Math.random() * 50 + 10; 
+let sun = new Body(new Vector(350, 200));
+sun.setMass(60);
+sun.setVelocity( new Vector(0, 0) );
+sun.setShape( new CircleShape(40) );
+system.add( sun );
 
-	let body = new Body(new Vector(x, y));
-	body.setVelocity(new Vector(Math.random() / 5, Math.random() / 5));
+let planet = new Body(new Vector(150, 200));
+planet.setMass(1);
+planet.setVelocity( new Vector(80, 30) );
+planet.setShape(  new CircleShape(10) );
+system.add( planet );
 
-	body.setShape( PolyShape.Square(x, y, w, h) );
-	system.add( body );
-}
-
-for (var i = 0; i < 10; i++) {
-	let x = Math.random() * canvas.width;
-	let y = Math.random() * canvas.height;
-	let radius = Math.random() * 60 + 10; 
-
-	let body = new Body(new Vector(x, y));
-	body.setVelocity(new Vector(Math.random() / 5, Math.random() / 5));
-	body.setAcceleration(new Vector(-0.01, Math.random()/10));
-	body.setShape( new CircleShape(radius) );
-	system.add( body );
-}
-
-
-
+system.setEachBodyDampingFactor(0.99);
 
 function update() {
 	ctx.fillStyle = "black";
@@ -64,8 +51,13 @@ function update() {
 	t2 = t1;
 	delta_time *= scale;
 
-	TimerGui.show("- Virtual Time (simulation) :: "+Math.round(timeSec / 1000000)+" s -");
+	
+	if( delta_time >= 0.2) {
+		delta_time = 0;
+	}
+	
 
+	TimerGui.show("- Virtual Time (simulation) :: "+Math.round(timeSec / 1000000)+" s -");
 	system.each(body => {
 		let [x, y, v, a] = [body.getX(), body.getY(), body.getVelocity(), body.getAcceleration()];
 		let shape = body.getShape();
@@ -81,7 +73,14 @@ function update() {
 			Draw.polyShape( shape );
 		}
 	});
+
+	sun.applyForce( Force.gravity( sun, planet) );
+	planet.applyForce( Force.gravity( planet, sun) );
+
 	system.update(delta_time);
+	
+	
+
 	nframes++;
 }
 

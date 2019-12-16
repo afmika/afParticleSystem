@@ -34,7 +34,7 @@ for(let i = 0; i < n; i++) {
 	let y = Math.random() * propag_height + ty;
 	let ball = new Ball(x, y, 2);
 	let vx = Math.random() / 3 * (Math.random() > 0.5 ? -1 : 1 );
-	ball.setVelocity(new Vector(vx, -0.5));
+	ball.setVelocity(new Vector(vx, 0.5));
 	system.add(ball);
 }
 
@@ -78,10 +78,10 @@ function update() {
 			ctx.closePath();
 
 			if(x-body.getShape().radius <= 0 || x+body.getShape().radius >= canvas.width) {
-				body.setVelocity( v.times(-1, 1) );
+				body.setVelocity( v.times(-0.8, 1) );
 			}
 			if(y-body.getShape().radius <= 0 || y+body.getShape().radius >= canvas.height) {
-				body.setVelocity( v.times(1, -1) );
+				body.setVelocity( v.times(1, -0.8) );
 			}			
 			air.applyForce(body);
 

@@ -14,8 +14,13 @@ class Body {
           this.static = false;
           // this.shape = Shape.Circle(1);
           this.is_colliding = false;
+          this.inverseMass = 1;
+          this.setDampingFactor(0.999);
      }
 
+     setDampingFactor(damping_factor) {
+          this.damping_factor = damping_factor;
+     }
      setStatic(_static) {
           this.static = _static;
      }
@@ -24,10 +29,23 @@ class Body {
      }
 
      applyForce(force) {
+          // SHOULD NOT BE CALLED WHEN MULTIPLE
+          // FORCE IS APPLIED TO THE BODY
+
+          // single force only
           // f = m a
           // => a = (1/m) f
-          let tmp = force.times(-1 / this.mass);
+          let tmp = force.times( this.getInverseMass() );
           this.setAcceleration(Vector.add(this.getAcceleration(), tmp ));
+     }
+     applyMultipleForces(forces_array) {
+          // SHOULD BE called WHEN THERE IS
+          // multiple forces AT THE SAME TIME
+          let sum = new Vector(0, 0);
+          forces_array.forEach(force => {
+               sum = Vector.add( sum, force);
+          });
+          this.applyForce( sum );          
      }
      update( delta_time ) {
           let dt = 1;
@@ -36,20 +54,26 @@ class Body {
           }
           let vel = this.getVelocity();
           let acc = this.getAcceleration();
-          // dx <- dx + d^2 x
-          this.setVelocity( Vector.add(vel, acc.times(dt) ) );
-
-          // x <- x + dx
+          // dv/dt= a
+          // dv = a dt
+          // dv <- dv + a dt
+          // dv <- dv * dampingFactor
+          let damping_factor = this.getDampingFactor();
+          let new_velocity = Vector.add( vel, acc.times(dt) ).times(damping_factor);
+          this.setVelocity( new_velocity );
+          // dx/dt = v
+          // dx = v dt
+          // x <- x + dx = x + v dt
           if( ! this.isStatic() ) {
                let loc = this.getLocation();
-               this.setLocation( Vector.add(loc, vel.times(dt)) );
+               this.setLocation( Vector.add(loc, new_velocity.times(dt)) );
 
                let shape = this.getShape();
                if(shape.getType() != "CIRCLE") {
-                    // need to update each vertexs positions
+                    // need to update each vertex position
                     let vertexs = shape.getVertexs();
                     vertexs.forEach(vertex => {
-                         let temp = Vector.add(vertex, vel.times(dt));
+                         let temp = Vector.add(vertex, new_velocity.times(dt));
                          vertex.setX(temp.getX());
                          vertex.setY(temp.getY());
                     });
@@ -58,12 +82,21 @@ class Body {
      }
 
      setLocation(location) {
+          if(! (location instanceof Vector ) ) {
+               throw "LOCATION MUST BE A 2D-VECTOR";
+          } 
           this.location = location || new Vector(0, 0);     
      }
      setVelocity(velocity) {
+          if(! (velocity instanceof Vector ) ) {
+               throw "VELOCITY MUST BE A 2D-VECTOR";
+          }
           this.velocity = velocity || new Vector(0, 0);     
      }
      setAcceleration(acceleration) {
+          if(! (acceleration instanceof Vector ) ) {
+               throw "ACCELERATION MUST BE A 2D-VECTOR";
+          }
           this.acceleration = acceleration || new Vector(0, 0);  
      }
      setMass(mass) {
@@ -75,6 +108,7 @@ class Body {
                throw EXCEPTION.NOT_A_NUMBER;
           }
           this.mass = tmp;
+          this.inverseMass = 1 / tmp;
      }
      setData(data_obj) {
           this.data = data_obj;
@@ -106,6 +140,12 @@ class Body {
      }
      getMass() {
           return this.mass;
+     }
+     getInverseMass() {
+          return this.mass;
+     }
+     getDampingFactor() {
+          return this.damping_factor;
      }
      getData() {
           return this.data;

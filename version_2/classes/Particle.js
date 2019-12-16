@@ -5,8 +5,9 @@
  */
  
 class Particle extends Body {
-	constructor(x, y) {
-		super(new Vector(x, y));
+	constructor(location) {
+		super(location);
+		this.shape = new CircleShape(1);
 		this.life = 100;
 	}
 

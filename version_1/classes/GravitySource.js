@@ -35,11 +35,11 @@ class GravitySource extends Body {
 	}
 
 	attract(body) {
-		body.applyForce(this.getGravityForce(body)); 
+		body.applyForce(this.getGravityForce(body).times(-1)); 
 	}
 
 	repulse(body) {
-		body.applyForce(this.getGravityForce(body).times(-1)); 
+		body.applyForce(this.getGravityForce(body)); 
 	}
 
 }

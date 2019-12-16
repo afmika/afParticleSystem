@@ -8,10 +8,18 @@ class World {
 	constructor(anchor) {
 		this.setAnchor(anchor);
 		this.bodies = [];
-		this.collision = true;
+
+		this.collision = true; // collision detection
 		this.momentum = false;
+
+		//this.minVelocity = 0.00000001;
 	}
 	
+	setEachBodyDampingFactor(damping_factor) {
+		this.each(body => {
+			body.setDampingFactor(damping_factor);
+		});
+	}
 	setMomentum(bool) {
 		this.momentum = bool;
 	}
@@ -105,6 +113,11 @@ class World {
 					p.collides(false);
 				}
 			}
+			/*
+			if(p.getVelocity().getLength() < this.minVelocity ) {
+				p.setVelocity(Vector.zero());
+			}
+			*/
 			p.update( delta_time );
 		});
 	}

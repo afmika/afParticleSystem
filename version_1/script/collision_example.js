@@ -33,7 +33,7 @@ system.eachIndex((i, p) => {
 	p.setMass(1000);
 	//p.applyForce(new Vector(0, -9.81 / 100));
 });
-system.applyForce(new Vector(0, -9.81));
+system.applyForce(new Vector(0, 9.81));
 // system.setMomentum(true);
 
 
