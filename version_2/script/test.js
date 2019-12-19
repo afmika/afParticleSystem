@@ -72,7 +72,7 @@ function update() {
 		let center = body.getLocation();
 
 		Draw.point( center );
-		if( shape.getType() == "CIRCLE") {
+		if( shape instanceof CircleShape ) {
 			Draw.circleShape(center, shape );
 		} else {
 			// shape contains vertexs arr. 

@@ -11,8 +11,11 @@ class Body {
           this.setAcceleration(new Vector(0,0));
           this.setMass(1); // default mass
           this.setData({});
+          this.setRestitution(1);
+          this.setFriction(0.1);
+
           this.static = false;
-          // this.shape = Shape.Circle(1);
+          //this.shape = PolyShape.Circle(1);
           this.is_colliding = false;
           this.inverseMass = 1;
           this.setDampingFactor(0.999);
@@ -116,6 +119,13 @@ class Body {
      setShape(shape) {
           this.shape = shape;
      }
+     setRestitution(restitution) {
+          this.restitution = restitution;
+     }
+     setFriction(friction) {
+          this.friction = friction;
+     }
+
      collides(bool) {
           if(bool == undefined) {
                return this.is_colliding;
@@ -152,5 +162,11 @@ class Body {
      }
      getShape() {
           return this.shape;
+     }
+     getRestitution() {
+          return this.restitution;
+     }
+     getFriction() {
+          return this.friction;
      }
 }

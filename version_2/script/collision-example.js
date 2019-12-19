@@ -28,19 +28,16 @@ let system = new World(anchor);
 // ENABLE MOMENTUM
 system.setMomentum(true);
 
-let sun = new Body(new Vector(350, 200));
-sun.setMass(60);
-sun.setVelocity( new Vector(0, 0) );
-sun.setShape( new CircleShape(40) );
-system.add( sun );
-
-let planet = new Body(new Vector(200, 200));
-planet.setMass(1);
-planet.setVelocity( new Vector(80, 30) );
-planet.setShape(  new CircleShape(10) );
-system.add( planet );
-
-system.setEachBodyDampingFactor(0.99);
+for (var i = 0; i < 60; i++) {
+	let x = 200 + Math.random() * 200;
+	let y = 100 + Math.random() * canvas.height/2;
+	let radius = Math.random() * 70;
+	let ball = new Body(new Vector(x, y));
+	ball.setShape(new CircleShape(radius));
+	ball.setMass( radius / 3 );
+	ball.setVelocity( new Vector(Math.random(), Math.random()) );
+	system.add( ball );
+}
 
 function update() {
 	ctx.fillStyle = "black";
@@ -64,23 +61,14 @@ function update() {
 		let center = body.getLocation();
 
 		Draw.point( center );
-		if( shape instanceof CircleShape ) {
+		if( shape instanceof CircleShape) {
 			Draw.circleShape(center, shape );
 		} else {
-			// shape contains vertexs arr. 
-			// we dont need the center 'cause we can guess it
-			// from the vertexs positions
 			Draw.polyShape( shape );
 		}
 	});
 
-	sun.applyForce( Force.gravity( sun, planet) );
-	planet.applyForce( Force.gravity( planet, sun) );
-
 	system.update(delta_time);
-	
-	
-
 	nframes++;
 }
 

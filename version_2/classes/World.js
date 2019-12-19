@@ -80,32 +80,12 @@ class World {
 		let that = this;
 		this.each(p => {
 			if( that.collision ) { 
-				let other = that.solveCollision(p)
-				if( other != null ) {
+				// check collision
+				let collision = that.solveCollision(p)
+				if( collision != null ) {
 					let compute_momentum = this.getMomentum();
 					if( compute_momentum ) {
-						// F = dp / dt = m (dv / dt) = m a
-						let m1 = p.getMass(),
-							m2 = other.getMass();
-						// before collision
-						let v1 = p.getVelocity(),
-							v2 = other.getVelocity();
-						// after collision
-						let A = v1.times( (m1 - m2) / (m1 + m2) ),
-							B = v2.times( (2 * m2) / (m1 + m2) );
-						let v1_f = Vector.add(A, B);
-
-						let _A = v2.times( (m2 - m1) / (m1 + m2) ),
-							_B = v1.times( (2 * m1) / (m1 + m2) );
-						let v2_f = Vector.add(_A, _B);
-
-						if( ! other.isStatic() ) {
-							p.setVelocity(v1_f);
-							other.setVelocity(v2_f);
-							
-						} else {							
-							p.setVelocity(v1.times(-1));
-						}
+						collision.resolveMomentum();
 					}
 
 					p.collides(true);
@@ -127,12 +107,18 @@ class World {
 	 	 return !bool;
 	}
 
-	solveCollision(body) {
-		let collides_with = null;
-		this.each(body => {
-			
+	solveCollision(body_a) {
+		let collision = null;
+		this.each(body_b => {
+			if(body_b != body_a) {
+				collision = Collision.detect(body_a, body_b);
+				if( collision != null ) {
+					collision.resolvePenetration();
+					return;
+				}
+			}
 		});
 
-		return collides_with;
+		return collision;
 	}
 }

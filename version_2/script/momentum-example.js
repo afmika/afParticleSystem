@@ -28,19 +28,24 @@ let system = new World(anchor);
 // ENABLE MOMENTUM
 system.setMomentum(true);
 
-let sun = new Body(new Vector(350, 200));
-sun.setMass(60);
-sun.setVelocity( new Vector(0, 0) );
-sun.setShape( new CircleShape(40) );
-system.add( sun );
+let ball_a = new Body(new Vector(100, 100));
+ball_a.setShape(new CircleShape(60));
 
-let planet = new Body(new Vector(200, 200));
-planet.setMass(1);
-planet.setVelocity( new Vector(80, 30) );
-planet.setShape(  new CircleShape(10) );
-system.add( planet );
+ball_a.setRestitution( 1 );
+ball_a.setFriction( 0.1 );
+ball_a.setMass( 600 );
 
-system.setEachBodyDampingFactor(0.99);
+ball_a.setVelocity( new Vector(10.4, 10.2) );
+system.add( ball_a );
+
+let ball_b = new Body(new Vector(300, 300));
+ball_b.setShape(new CircleShape(30));
+
+ball_b.setRestitution( 0 );
+ball_b.setFriction( 1 );
+ball_b.setMass( 200 );
+
+system.add( ball_b );
 
 function update() {
 	ctx.fillStyle = "black";
@@ -64,23 +69,14 @@ function update() {
 		let center = body.getLocation();
 
 		Draw.point( center );
-		if( shape instanceof CircleShape ) {
+		if( shape instanceof CircleShape) {
 			Draw.circleShape(center, shape );
 		} else {
-			// shape contains vertexs arr. 
-			// we dont need the center 'cause we can guess it
-			// from the vertexs positions
 			Draw.polyShape( shape );
 		}
 	});
 
-	sun.applyForce( Force.gravity( sun, planet) );
-	planet.applyForce( Force.gravity( planet, sun) );
-
 	system.update(delta_time);
-	
-	
-
 	nframes++;
 }
 
