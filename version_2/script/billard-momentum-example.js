@@ -28,25 +28,36 @@ let system = new World(anchor);
 // ENABLE MOMENTUM
 system.setMomentum(true);
 
-let ball_a = new Body(new Vector(100, 100));
-ball_a.setShape(new CircleShape(60));
+let dim = 20;
 
-ball_a.setRestitution( 0.5 );
-ball_a.setFriction( 0.1 );
-ball_a.setMass( 6 );
+// triangle
+let stx = canvas.width/2 + 100;
+let sty = canvas.height/2;
 
-ball_a.setVelocity( new Vector(4, 4) );
-system.add( ball_a );
+system.add(new Ball(stx, sty, dim));
 
-let ball_b = new Body(new Vector(300, 300));
-ball_b.setShape(new CircleShape(30));
-ball_b.setVelocity( new Vector(-3, -3.2) );
+system.add(new Ball(stx + 2*dim+2, sty - dim - 1, dim));
+system.add(new Ball(stx + 2*dim+2, sty + dim + 1, dim));
 
-ball_b.setRestitution( 0.8 );
-ball_b.setFriction( 1 );
-ball_b.setMass( 5 );
+system.add(new Ball(stx + 4*dim+2, sty - 2*dim - 2, dim));
+system.add(new Ball(stx + 4*dim+2, sty, dim));
+system.add(new Ball(stx + 4*dim+2, sty + 2*dim + 2, dim));
 
-system.add( ball_b );
+system.add(new Ball(stx + 6*dim+4, sty - 3*dim - 4, dim));
+system.add(new Ball(stx + 6*dim+4, sty - dim - 1, dim));
+system.add(new Ball(stx + 6*dim+4, sty + dim + 1, dim));
+system.add(new Ball(stx + 6*dim+4, sty + 3*dim + 4, dim));
+
+system.each(body => {
+	body.setFriction(0.1);
+	body.setRestitution(0.1);
+	body.setVelocity(new Vector(-3, 0));
+});
+// 
+let ball = new Ball(100, sty, dim);
+ball.setVelocity(new Vector(4, 0));
+ball.setMass(1);
+system.add(ball);
 
 function update() {
 	ctx.fillStyle = "black";

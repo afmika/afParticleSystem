@@ -152,7 +152,7 @@ class Body {
           return this.mass;
      }
      getInverseMass() {
-          return this.mass;
+          return this.inverseMass;
      }
      getDampingFactor() {
           return this.damping_factor;

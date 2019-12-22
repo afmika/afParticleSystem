@@ -12,7 +12,7 @@ class World {
 		this.collision = true; // collision detection
 		this.momentum = false;
 
-		//this.minVelocity = 0.00000001;
+		// this.minVelocity = 0.2;
 	}
 	
 	setEachBodyDampingFactor(damping_factor) {
@@ -85,6 +85,7 @@ class World {
 				if( collision != null ) {
 					let compute_momentum = this.getMomentum();
 					if( compute_momentum ) {
+						//collision.resolveMomentumNoNormals();
 						collision.resolveMomentum();
 					}
 
@@ -98,6 +99,7 @@ class World {
 				p.setVelocity(Vector.zero());
 			}
 			*/
+			
 			p.update( delta_time );
 		});
 	}

@@ -9,7 +9,7 @@ class Collision {
 		this.bodies = bodies || [];
 		this.depth = depth || [];
 		this.normal = normal || [];
-		this.correction_rate = 0.9;
+		this.correction_rate = 1.2;
 	}
 
 	resolvePenetration() {
@@ -31,7 +31,31 @@ class Collision {
 		a.setLocation(new_loc_a);
 		b.setLocation(new_loc_b);
 	}
+	resolveMomentumNoNormals() {
+		let p = this.bodies[0],
+			other = this.bodies[1];
+			
+		let m1 = p.getMass(),
+			m2 = other.getMass();
+		// before collision
+		let v1 = p.getVelocity(),
+			v2 = other.getVelocity();
+		// after collision
+		let A = v1.times( (m1 - m2) / (m1 + m2) ),
+			B = v2.times( (2 * m2) / (m1 + m2) );
+		let v1_f = Vector.add(A, B);
 
+		let _A = v2.times( (m2 - m1) / (m1 + m2) ),
+			_B = v1.times( (2 * m1) / (m1 + m2) );
+		let v2_f = Vector.add(_A, _B);
+
+		if( ! other.isStatic() ) {
+			p.setVelocity(v1_f);
+			other.setVelocity(v2_f);
+		} else {							
+			p.setVelocity(v1.times(-1));
+		}
+	}
 	resolveMomentum() {
 		let a = this.bodies[0],
 			b = this.bodies[1];
@@ -53,7 +77,7 @@ class Collision {
 
 		// if objects moving apart ignore
 		if (rVelocityInNormal > 0) {
-			//alert("APART")
+			// alert("APART")
 		   	return;			
 		}
 
@@ -91,6 +115,7 @@ class Collision {
 		impulse = tangent.times(jT);
 
 		//alert(impulse.getStatus());
+		//alert(Vector.add(a.getVelocity(), impulse.times(a_inv_mass)).getStatus() + " et " +Vector.sub(b.getVelocity(), impulse.times(b_inv_mass)).getStatus() )
 		a.setVelocity( Vector.add(a.getVelocity(), impulse.times(a_inv_mass)) );
 		b.setVelocity( Vector.sub(b.getVelocity(), impulse.times(b_inv_mass)) );
 	}
