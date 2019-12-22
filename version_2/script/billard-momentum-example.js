@@ -51,7 +51,6 @@ system.add(new Ball(stx + 6*dim+4, sty + 3*dim + 4, dim));
 system.each(body => {
 	body.setFriction(0.1);
 	body.setRestitution(0.1);
-	body.setVelocity(new Vector(-3, 0));
 });
 // 
 let ball = new Ball(100, sty, dim);

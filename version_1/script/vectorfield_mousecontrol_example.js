@@ -78,7 +78,16 @@ function update() {
 
 		ctx.beginPath();
 		
-		ctx.strokeStyle = "white";
+		let value = Math.floor(v.getLength() * 1000);
+
+		var gradient = ctx.createLinearGradient(0, 0, value, 0);
+		gradient.addColorStop("0", "magenta");
+		gradient.addColorStop("0.5" ,"blue");
+		gradient.addColorStop("1.0", "green");
+
+		// Fill with gradient
+		ctx.strokeStyle = gradient;
+
 		ctx.lineWidth = 2;
 
 		ctx.moveTo(gx, gy);
