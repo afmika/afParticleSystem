@@ -36,7 +36,7 @@ for (var i = 0; i < 30; i++) {
 	let body = new Body(new Vector(x, y));
 	body.setVelocity(new Vector(Math.random() / 5, Math.random() / 5));
 
-	body.setShape( PolyShape.Square(x, y, w, h) );
+	body.setShape( PolyShape.Rectangle(x, y, w, h) );
 	system.add( body );
 }
 

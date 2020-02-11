@@ -33,7 +33,7 @@ for (var i = 0; i < 60; i++) {
 	let particle = new Particle(new Vector(x, y));
 	particle.setVelocity(new Vector(Math.random() * 10, Math.random() * 10));
 	particle.setAcceleration(new Vector(0, 0.5));
-	particle.setMass( 1 );
+	particle.setMass( 0.02 );
 	system.add( particle );
 }
 

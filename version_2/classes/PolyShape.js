@@ -40,9 +40,9 @@ class PolyShape {
 		}
 	}
 
-	static Square(x, y, width, height) {
+	static Rectangle(x, y, width, height) {
 		let rect = new PolyShape(x, y, []);
-		rect.setType("SQUARE");
+		rect.setType( "RECTANGLE" );
 		rect.addVertex(new Vector(x - width / 2, y - height / 2));
 		rect.addVertex(new Vector(x + width / 2, y - height / 2));
 		rect.addVertex(new Vector(x + width / 2, y + height / 2));

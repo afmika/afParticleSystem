@@ -1,0 +1,3 @@
+CREER UN OBJET Parcourt pour decrire les sols curvilignes ({} segment :: resolution segment VS cercle , segment VS polygone)
+
+- make a Box class (the shape will be based on PolyShape.Square(....) )

@@ -90,8 +90,8 @@ class Collision {
 		
 		//impulse is in direction of normal ( from s1 to s2)
 		let impulse = n.times(jN);
-		// impulse = F dt = m * v
-		// v = impulse / m
+		// impulse = F dt = m * dv
+		// dv = impulse / m
 
 		a.setVelocity( Vector.sub(a.getVelocity(), impulse.times(a_inv_mass)) );
 		b.setVelocity( Vector.add(b.getVelocity(), impulse.times(b_inv_mass)) );
@@ -140,7 +140,6 @@ class Collision {
 				return new Collision([a, b], depth, normal);
 			}
 		}
-
 		return null;
 	}
 }
